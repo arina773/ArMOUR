@@ -24,7 +24,7 @@ export default class Log_in extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <ImageBackground source={require('./l.png')}  style={styles.image}>
+      <ImageBackground source={require('./Regist1.jpeg')}  style={styles.image}>
         <View style={styles.container}> 
           <Text style={styles.greeting}>{`Welcome\n Back`}</Text>
           
@@ -81,10 +81,10 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 36,
-    color: '#fff',
+    color: '#000000',
     paddingBottom: 10,
     marginBottom: 40,
-    borderBottomColor: '#fff',
+    borderBottomColor: '#000000',
     borderBottomWidth: 1,
   },
   texts: {
@@ -96,13 +96,13 @@ const styles = StyleSheet.create({
     height: 40,
     marginBottom: 30,
     color: '#000000',
-    borderBottomColor: '#fff',
+    borderBottomColor: '#000000',
     borderBottomWidth: 1,
   },
   button: {
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: '#a83248',
+    backgroundColor: '#d971a8',
     borderRadius: 4,
     justifyContent: 'center',
     height: '5%',
@@ -110,11 +110,11 @@ const styles = StyleSheet.create({
     marginBottom: '5%'
   },
   btntext: {
-    color: '#fff',
+    color: '#000000',
     fontWeight: '500',
   },
   btntext2: {
-    color: '#285226',
+    color: '#000000',
     fontStyle: 'italic',
   },
   form: {
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: '400',
     alignSelf: 'center',
-    color: '#fff'
+    color: '#000000'
   }, 
   errorMessage: {
  
@@ -142,8 +142,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   image: {
-    alignSelf: 'flex-start',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-}
+    alignSelf: 'center',
+    resizeMode: 'cover',
+    width: '100%',
+    height: '100%'
+  }
 });

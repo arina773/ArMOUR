@@ -9,9 +9,9 @@ export default class Login_signup extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (  
-            <View style={styles.container}> 
-                <Image source={require('./LS.jpeg')}  style={styles.image}/>
-                <Text style={styles.text}>Be safe with us!</Text> 
+             
+            <ImageBackground source={require('./lands.jpeg')}  style={styles.image}>
+                <View style={styles.container}></View> 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.replace('Registration')}>
                         <Text style={styles.btntext}>Sign up</Text>
@@ -20,7 +20,9 @@ export default class Login_signup extends React.Component {
                         <Text style={styles.btntext}>Login</Text>
                     </TouchableOpacity>  
                 </View>
-            </View>
+                
+            </ImageBackground>
+            
         );
     }
 }
@@ -29,7 +31,7 @@ const styles = StyleSheet.create({
         flex: 1,  
         width: null,
         height: null,
-        backgroundColor: '#f9e3e5',
+       // backgroundColor: '#f9e3e5',
         justifyContent: 'flex-end'
     },
     buttonContainer:{       
@@ -42,11 +44,12 @@ const styles = StyleSheet.create({
         fontSize: 40,
         fontStyle: 'italic',
         fontWeight: 'bold',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        color: '#fff'
     },
     button: {
         padding: 15,
-        backgroundColor: '#59cbbd',  
+        backgroundColor: '#fff',  
         marginHorizontal: '5%',
         borderRadius: 10,
         width: '40%',
@@ -56,10 +59,13 @@ const styles = StyleSheet.create({
     },
     btntext: {
         fontWeight: 'bold',
-        color: '#fff'
+        color: '#000000'
     },
     image: {
-        alignSelf: 'center',
-        resizeMode: 'center'
-    }
+        flex: 1,
+        resizeMode: "cover",
+        width: '100%',
+        height: '100%',
+        justifyContent: "center",
+      },
 });

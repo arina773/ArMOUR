@@ -20,6 +20,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 import PlayScreen from './tabs/PlayScreen';
 import ContactsTab from './tabs/ContactsTab';
 import Logout from './tabs/Logout';
+import Info from './tabs/Info';
 
 //Import Custom Sidebar
 import SideMenu from './SideMenu';
@@ -58,7 +59,7 @@ const FirstActivity_StackNavigator = createStackNavigator({
       title: 'Start',
       headerRight: ()=> <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
-        backgroundColor: '#c991c2',
+        backgroundColor: '#d971a8',
       },
       headerTintColor: '#fff',
     }),
@@ -75,7 +76,7 @@ const Screen2_StackNavigator = createStackNavigator({
       headerRight: ()=> <NavigationDrawerStructure navigationProps={navigation} />,
 
       headerStyle: {
-        backgroundColor: '#c991c2',
+        backgroundColor: '#d971a8',
       },
       headerTintColor: '#fff',
     }),
@@ -83,15 +84,31 @@ const Screen2_StackNavigator = createStackNavigator({
 });
 
 //Stack Navigator for the Third Option of Navigation Drawer
-const Screen3_StackNavigator = createStackNavigator({
+const Screen4_StackNavigator = createStackNavigator({
   //All the screen from the Third Option will be indexed here
-  Third: {
+  Forth: {
     screen: Logout,
     navigationOptions: ({ navigation }) => ({
       title: 'Log out',
       headerRight: ()=> <NavigationDrawerStructure navigationProps={navigation} />,
       headerStyle: {
-        backgroundColor: '#c991c2',
+        backgroundColor: '#d971a8',
+      },
+      headerTintColor: '#fff',
+    }),
+  },
+});
+
+const Screen3_StackNavigator = createStackNavigator({
+  //All the screen from the Second Option will be indexed here
+  Third: {
+    screen: Info,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Info',
+      headerRight: ()=> <NavigationDrawerStructure navigationProps={navigation} />,
+
+      headerStyle: {
+        backgroundColor: '#d971a8',
       },
       headerTintColor: '#fff',
     }),
@@ -112,6 +129,12 @@ const DrawerNavigatorExample = createDrawerNavigator(
       screen: Screen2_StackNavigator,
       navigationOptions: {
         drawerLabel: 'Demo Screen 2',
+      },
+    },
+    NavScreen4: {
+      screen: Screen4_StackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Demo Screen 4',
       },
     },
     NavScreen3: {

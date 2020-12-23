@@ -36,22 +36,20 @@ export default class SideMenu extends Component {
         screenToNavigate: 'NavScreen2',
       },
       {
+        navOptionThumb: 'info',
+        navOptionName: 'About Us',
+        screenToNavigate: 'NavScreen3',
+      },
+      {
         navOptionThumb: 'directions-run',
         navOptionName: 'Log out',
-        screenToNavigate: 'NavScreen3',
+        screenToNavigate: 'NavScreen4',
       },
     ];
   }
   render() {
     return (
       <View style={styles.sideMenuContainer}>
-        
-        
-        <Image
-          source={require('./l.png')}
-          style={styles.sideMenuProfileIcon}
-          
-        />
         <Text style={{fontSize: 20}}>{this.state.displayName}</Text>
         {/*Divider between Top Image and Sidebar Option*/}
         <View

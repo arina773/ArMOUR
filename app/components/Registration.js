@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button, Image, ImageBackground, Dimensions } from 'react-native';
-//import * as firebase from 'firebase';
+import * as firebase from 'firebase';
 import UserPermissions from './untitled/UserPermissions';
 import * as ImagePicker from 'expo-image-picker';
 import {Ionicons} from '@expo/vector-icons';
-import Fire from './Fire';
+//import Fire from './Fire';
 export default class Registration extends React.Component {
   static navigationOptions = {
     headerShown: false,
@@ -12,15 +12,13 @@ export default class Registration extends React.Component {
     gesturesEnabled: false,
   };
   state = { 
-    user: {
-      name: '',
-      email: '',
-      password: '',
-      avatar: null,
-    },
+    name: '',
+    email: '',
+    password: '',
+   /*avatar: null,*/
     errorMessage: null,
   };
-  handlePickAvatar = async () => {
+  /*handlePickAvatar = async () => {
     UserPermissions.getCameraPermission();
 
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -33,26 +31,7 @@ export default class Registration extends React.Component {
       this.setState ({ avatar: result.uri });
     }
   };
-
-  handleSignUp = () => {
-    /*firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(userCredentials => {
-        return userCredentials.user.updateProfile({
-          displayName: this.state.name
-        });
-      })
-      .catch(error => this.setState({ errorMessage: error.message }));*/
-      Fire.shared.createUser(this.state.user)
-  };
-  render() {
-    const { navigate } = this.props.navigation;
-    return (
-      <ImageBackground source={require('./s.png')}  style={styles.image}>
-        <View style={styles.container}> 
-
-          <View style={{position: "absolute", alignItems: "center", width: '100%', flexDirection: "column", marginBottom: 20}}>
+  <View style={{position: "absolute", alignItems: "center", width: '100%', flexDirection: "column", marginBottom: 20}}>
             <Text style={styles.greeting}>{`Hello \nSign up to get started`}</Text>
             <TouchableOpacity style={styles.avatarPlaceholder} onPress={this.handlePickAvatar}>
               <Image source={{uri: this.state.avatar}} style={styles.avatar}/>
@@ -63,8 +42,28 @@ export default class Registration extends React.Component {
                 style={{marginTop: 6, marginLeft: 2}}
               ></Ionicons>
             </TouchableOpacity>
-          </View>   
+          </View> */
+
+  handleSignUp = () => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(userCredentials => {
+        return userCredentials.user.updateProfile({
+          displayName: this.state.name
+        });
+      })
+      .catch(error => this.setState({ errorMessage: error.message }));
+     /* Fire.shared.createUser(this.state.user)*/
+  };
+  render() {
+    const { navigate } = this.props.navigation;
+    return (
+      <ImageBackground source={require('./Regist1.jpeg')}  style={styles.image}>
+        <View style={styles.container}> 
+
           
+          <Text style={styles.greeting}>Create an account</Text>
           <View style={styles.errorMessage}>
             {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
           </View>
@@ -75,8 +74,8 @@ export default class Registration extends React.Component {
               <TextInput 
               style={styles.TextInput} 
               placeholder='Full Name'
-              onChangeText={name => this.setState({ user: { ...this.state.user, name} })}
-              value={this.state.user.name}
+              onChangeText={name => this.setState({name})}
+              value={this.state.name}
               underlineColorAndroid={'transparent'} />
             </View>
 
@@ -84,8 +83,8 @@ export default class Registration extends React.Component {
               <TextInput 
               style={styles.TextInput} 
               placeholder='Email or Username'
-              onChangeText={email => this.setState({ user: { ...this.state.user, email} })}
-              value={this.state.user.email}
+              onChangeText={email => this.setState({  email  } )}
+              value={this.state.email}
               underlineColorAndroid={'transparent'} />
             </View>
 
@@ -93,8 +92,8 @@ export default class Registration extends React.Component {
               <TextInput 
               style={styles.TextInput} 
               placeholder='Password'
-              onChangeText={password => this.setState({ user: { ...this.state.user, password} })}
-              value={this.state.user.password}
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
               secureTextEntry={true} underlineColorAndroid={'transparent'} />
             </View>
           </View>
@@ -119,8 +118,7 @@ export default class Registration extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-evenly',
-    flexDirection: "column",
+    justifyContent: 'space-evenly'
    
   },
   regform: {
@@ -128,10 +126,10 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 36,
-    color: '#fff',
+    color: '#000000',
     paddingBottom: 10,
     marginBottom: 40,
-    borderBottomColor: '#fff',
+    borderBottomColor: '#000000',
     borderBottomWidth: 1,
   },
   texts: {
@@ -149,7 +147,7 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: '#a83248',
+    backgroundColor: '#d971a8',
     borderRadius: 4,
     justifyContent: 'center',
     height: '5%',
@@ -157,11 +155,11 @@ const styles = StyleSheet.create({
     marginBottom: '5%'
   },
   btntext: {
-    color: '#fff',
+    color: '#000000',
     fontWeight: '500',
   },
   btntext2: {
-    color: '#285226',
+    color: '#000000',
     fontStyle: 'italic',
   },
   form: {
@@ -173,15 +171,14 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: '400',
     alignSelf: 'center',
-    color: '#fff'
+    color: '#000000'
   }, 
   errorMessage: {
-    height: 72,
+ 
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 30,
     color: '#b30000',
-    marginTop: 125
   },
   error: {
     color: '#E9446A',
@@ -190,29 +187,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   image: {
-    alignSelf: 'flex-start',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  },
-  avatarPlaceholder: {
-    width: 100,
-    height: 100,
-    backgroundColor: '#E1E2E6',
-    borderRadius: 50,
-    marginTop: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1,
-    marginBottom: 40,
-    
-
-  },
-  avatar: {
-    position: "absolute",
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    flex: 1,
-    
+    alignSelf: 'center',
+    resizeMode: 'cover',
+    width: '100%',
+    height: '100%'
   }
 });

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'; 
 
 import { StyleSheet, Platform, Image, ImageBackground, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
-import Login_signup from './Login_signup';
+import Home from './Home';
+import Welcome from './Welcome';
 export default class Firstp extends Component
 {
   constructor(){
@@ -25,7 +26,7 @@ export default class Firstp extends Component
   componentDidMount(){  
     var that = this;  
     setTimeout(function(){  
-      that.props.navigation.replace('Login_signup');  
+      that.props.navigation.replace('Home');  
     }, 3000);  
    }  
  
