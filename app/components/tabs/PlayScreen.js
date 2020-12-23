@@ -1,135 +1,159 @@
-import React from 'react';
-import {  Button, Text, View, Card, Background, Logo, Header, Title, Divider } from 'react-native';
-import AudioRecorderPlayer, { 
-  AVEncoderAudioQualityIOSType,
-  AVEncodingOption, 
-  AudioEncoderAndroidType,
-  AudioSet,
-  AudioSourceAndroidType, 
- } from 'react-native-audio-recorder-player';
+import React from "react";
+import {Button, Alert, Dimensions, ImageBackground,
+  StyleSheet, Text,
+  View,
+} from "react-native";
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
+import {Icon} from 'react-native-elements';
+import * as firebase from 'firebase';
 
-export default class PlayScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoggingIn: false,
-      recordSecs: 0,
-      recordTime: '00:00:00',
-      currentPositionSec: 0,
-      currentDurationSec: 0,
-      playTime: '00:00:00',
-      duration: '00:00:00',
-    };
-    this.audioRecorderPlayer = new AudioRecorderPlayer();
-    this.audioRecorderPlayer.setSubscriptionDuration(0.09); // optional. Default is 0.1
-  }
-  render() {
+ 
+import TagInput from 'react-native-tags-input';
+const mainColor = '#fcedfc';
 
-    onStartRecord = async () => {
-      const path = 'hello.m4a';
-      const audioSet = {
-        AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
-        AudioSourceAndroid: AudioSourceAndroidType.MIC,
-        AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,
-        AVNumberOfChannelsKeyIOS: 2,
-        AVFormatIDKeyIOS: AVEncodingOption.aac,
+export default class App extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        tags: {
+          tag: '',
+          tagsArray: [],
+        },
+        email: '',
+        displayName: '',
+        location: null, 
+        lat:null,
+        long: null,
+        
+        name: {
+          email: '',
+          displayName: '',
+        },
+        tagsColor: mainColor,
+        tagsText: '#000000',
       };
-      console.log('audioSet', audioSet);
-      const uri = await this.audioRecorderPlayer.startRecorder(path, audioSet);
-      this.audioRecorderPlayer.addRecordBackListener((e) => {
-        this.setState({
-          recordSecs: e.current_position,
-          recordTime: this.audioRecorderPlayer.mmssss(
-            Math.floor(e.current_position),
-          ),
-        });
-      });
-      console.log(`uri: ${uri}`);
-    };
+    }
 
-    onStopRecord = async () => {
-      const result = await this.audioRecorderPlayer.stopRecorder();
-      this.audioRecorderPlayer.removeRecordBackListener();
+    /*state = {
+      location: null, 
+      lat:null,
+      long: null,
+    };  */
+    updateTagState = (state) => {
       this.setState({
-        recordSecs: 0,
-      });
-      console.log(result);
+        tags: state
+      })
     };
+ 
+    componentDidMount = () => {
+      this.getLocationAsync();
+      const {email, displayName} = firebase.auth().currentUser
+      this.setState({email, displayName})
+    };
+    
 
-
-
-    onStartPlay = async (e) => {
-      console.log('onStartPlay');
-      const path = 'hello.m4a'
-      const msg = await this.audioRecorderPlayer.startPlayer(path);
-      this.audioRecorderPlayer.setVolume(1.0);
-      console.log(msg);
-      this.audioRecorderPlayer.addPlayBackListener((e) => {
-        if (e.current_position === e.duration) {
-          console.log('finished');
-          this.audioRecorderPlayer.stopPlayer();
-        }
+    getLocationAsync = async () => {
+      let { status } = await Permissions.askAsync(Permissions.LOCATION);
+      if (status !== 'granted') {
         this.setState({
-          currentPositionSec: e.current_position,
-          currentDurationSec: e.duration,
-          playTime: this.audioRecorderPlayer.mmssss(
-            Math.floor(e.current_position),
-          ),
-          duration: this.audioRecorderPlayer.mmssss(Math.floor(e.duration)),
+          errorMessage: 'Permission to access location was denied',
         });
-      });
+      }
+  
+      let location = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.Highest});
+      const { latitude , longitude } = location.coords
+      this.setState({ location, latitude, longitude});
+  
     };
 
+    sendEmail = () => {
+      {console.log(this.state.tags)};
+      {console.log(this.state.tags.tagsArray )};
+      fetch('https://armour-server.herokuapp.com/email', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: this.state.displayName,
+          email:  this.state.tags.tagsArray.join(),
+          location: this.state.location,
+          lat: this.state.lat,
+          long: this.state.longitude, 
+          tags: this.state.tags,
+       
+        })
+      })
+    }
 
-    onPausePlay = async (e) => { 
-      await this.audioRecorderPlayer.pausePlayer();
-   };
-
-    onStopPlay = async (e) => {
-      console.log('onStopPlay');
-      this.audioRecorderPlayer.stopPlayer();
-      this.audioRecorderPlayer.removePlayBackListener();
-    };
-
-    return (
-      <Card style={{ flex: 1, flexDirection: 'row', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
-        <Background>
-          <Logo />
-          <Header>InstaPlayer</Header>
-          <Title>{this.state.recordTime}</Title>
-          <Button mode="contained" icon="record" onPress={() => this.onStartRecord()}>
-            RECORD
-        </Button>
-
-          <Button
-            icon="stop"
-            mode="outlined"
-            onPress={() => this.onStopRecord()}
-          >
-            STOP
-    </Button>
-          <Divider />
-          <Title>{this.state.playTime} / {this.state.duration}</Title>
-          <Button mode="contained" icon="play" onPress={() => this.onStartPlay()}>
-            PLAY
-        </Button>
-
-          <Button
-            icon="pause"
-            mode="contained"
-            onPress={() => this.onPausePlay()}
-          >
-            PAUSE
-    </Button>
-          <Button
-            icon="stop"
-            mode="outlined"
-            onPress={() => this.onStopPlay()}
-          >
-            STOP
-    </Button>
-        </Background>
-      </Card>
+  render() {
+    return(
+      <ImageBackground source={require('../Regist1.jpeg')} style={styles.image}>
+       
+        <TagInput
+          updateState={this.updateTagState}
+          tags={this.state.tags}
+          placeholder="Email you want to send your location"                            
+          label='Your contacts'
+          labelStyle={{color: '#91747f', marginLeft: 20, fontSize: 20}}
+          leftElement={<Icon name={'contacts'} type={'material-community'} color={'#ab8995'}/>}
+          leftElementContainerStyle={{marginLeft: 10}}
+          containerStyle={{width: (Dimensions.get('window').width)}}
+          inputContainerStyle={[styles.textInput, {backgroundColor: this.state.tagsColor}]}
+          inputStyle={{color: this.state.tagsText}}
+          onFocus={() => this.setState({tagsColor: '#fff', tagsText: '#ab8995'})}
+          onBlur={() => this.setState({tagsColor: mainColor, tagsText: '#fff'})}
+          autoCorrect={false}
+          tagStyle={styles.tag}
+          tagTextStyle={styles.tagText}
+          keysForTag={' '}/>
+      
+        <Button
+          title="Press me"
+          onPress={this.sendEmail}
+        />
+        <Text></Text>
+        
+      </ImageBackground>
     )
   }
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+  textInput: {
+    height: 40,
+    borderColor: '#000000',
+    borderWidth: 1,
+    marginTop: 5,
+    borderRadius: 5,
+    padding: 3,
+  },
+  tag: {
+      backgroundColor: '#ab8995',
+
+    },
+  tagText: {
+      color: mainColor
+    },
+  text: {
+    color: '#856f77',
+    fontStyle: 'italic',
+    fontSize: 18
+  },
+  image: {
+    alignSelf: 'center',
+    resizeMode: 'cover',
+    width: '100%',
+    height: '100%'
+  },
+})

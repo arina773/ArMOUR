@@ -1,13 +1,13 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, View, Text,  } from 'react-native';
+import { TouchableOpacity, StyleSheet, View, Text, ImageBackground,  } from 'react-native';
 import * as firebase from 'firebase';
 
 export default class HomeScreen extends React.Component {
   state = {
-    user:{
+    
     email: '',
     displayName: '',
-  }}
+  }
 
   componentDidMount() {
     const {email, displayName} = firebase.auth().currentUser
@@ -21,13 +21,15 @@ export default class HomeScreen extends React.Component {
 
   render () {
     return(
-      <View style={styles.container}>
-        <Text style={{fontSize: 30, color: '#594a50', fontStyle: 'italic',}}>Come back soon {this.state.user.displayName}</Text>
+      <ImageBackground source={require('../Regist1.jpeg')}  style={styles.image}>
+        <View style={styles.container}>
+          <Text style={{fontSize: 30, color: '#000000', fontStyle: 'italic',}}>Come back soon {this.state.displayName}</Text>
 
-        <TouchableOpacity style={{marginTop: 32}} onPress={this.signOutUser}>
-          <Text style={styles.text}>Log out</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity style={{marginTop: 32}} onPress={this.signOutUser}>
+            <Text style={styles.text}>Log out</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
     )
   }
 }
@@ -38,12 +40,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fcedfc',
+
     
   },
   text: {
-    color: '#856f77',
+    color: '#000000',
     fontStyle: 'italic',
     fontSize: 18
-  }
+  },
+  image: {
+    alignSelf: 'center',
+    resizeMode: 'cover',
+    width: '100%',
+    height: '100%'
+  },
 })

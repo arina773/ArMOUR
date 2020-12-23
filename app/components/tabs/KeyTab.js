@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, ImageBackground } from 'react-native'
 import RadioForm,  { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button'
 
 const keywords =[
@@ -13,21 +13,23 @@ const keywords =[
 export default class KeyTab extends Component{
     render(){
         return(
-            <View style={styles.container}>
-                <Text style={styles.text}>Please choose the Keyword</Text>
-                <RadioForm
-                    radio_props={keywords}
-                    initial={0} 
-                    onPress={()=>this.value}
-                    //buttonSize={40} 
-                    buttonOuterSize={50}
-                    buttonColor={'#9e868f'}
-                    
-                    selectedButtonColor={'#ab8995'}
-                    selectedLabelColor={'#000000'}
-                    labelStyle={{fontSize:15, color: '#ab8995'}}  
-                /> 
-            </View>
+            <ImageBackground source={require('../Regist1.jpeg')} style={styles.image}>
+                <View style={styles.container}>
+                    <Text style={styles.text}>Please choose the Keyword</Text>
+                    <RadioForm
+                        radio_props={keywords}
+                        initial={0} 
+                        onPress={()=>this.value}
+                        //buttonSize={40} 
+                        buttonOuterSize={50}
+                        buttonColor={'#9e868f'}
+                        
+                        selectedButtonColor={'#ab8995'}
+                        selectedLabelColor={'#000000'}
+                        labelStyle={{fontSize:15, color: '#ab8995'}}  
+                    /> 
+                </View>
+            </ImageBackground>
         );
     }
 
@@ -35,16 +37,22 @@ export default class KeyTab extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fcedfc',
+       // backgroundColor: '#fcedfc',
         alignItems: 'center',
         justifyContent: 'center',
         
     },
     text: {
-        color: '#634c55',
+        color: '#000000',
         fontSize: 30,
         fontWeight: '900',
         fontStyle: 'italic',
         marginBottom: '25%'
+    },
+    image: {
+        alignSelf: 'center',
+    resizeMode: 'cover',
+    width: '100%',
+    height: '100%'
     }
 })
